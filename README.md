@@ -6,11 +6,11 @@ The bundle provide a [Roxyfileman](http://www.roxyfileman.com/) integration for 
 
  1. [Installation](#installation)
  2. [Configuration](#configuration)
-   2.1 [File location configuration](#file-location-configuration)
-   2.2 [Roxyfileman configuration](#roxyfileman-configuration)
+   1. [File location configuration](#file-location-configuration)
+   2. [Roxyfileman configuration](#roxyfileman-configuration)
  3. [Advanced customization](#advanced-customization)
-   3.1 [Custom filesystem service](#custom-filesystem-service)
-   3.2 [Custom version of Roxyfileman](#custom-version-of-roxyfileman)
+   1. [Custom filesystem service](#custom-filesystem-service)
+   2. [Custom version of Roxyfileman](#custom-version-of-roxyfileman)
  4. [LICENSE](#license)
  
 ## Installation
@@ -49,7 +49,7 @@ RoxyFilemanBundle provide a simple configuration.
 
 ### File location configuration
 
-If you use the default `LocalFileSystem` (recommanded), this is the *required configuration* :
+If you use the default `LocalFileSystem` (recommanded), this is the **required configuration** :
 
 ``` yaml
     elendev_roxy_fileman:
@@ -72,7 +72,7 @@ Every configuration options are available on the [Roxyfileman configuration page
 ```
 
 The parameters have to be in lowercase.
-*Be careful* : every url parameter available on the [Roxyfileman configuration page](http://www.roxyfileman.com/install) should be used as a route here and the parameter have to be postfixed by `_route`. For example : the parameter `DIRLIST` becomes `dirlist_route`.
+**Be careful** : every url parameter available on the [Roxyfileman configuration page](http://www.roxyfileman.com/install) should be used as a route here and the parameter have to be postfixed by `_route`. For example : the parameter `DIRLIST` becomes `dirlist_route`.
 
 ## Advanced customization
 
