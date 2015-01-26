@@ -6,11 +6,11 @@ The bundle provide a [Roxyfileman](http://www.roxyfileman.com/) integration for 
 
  1. [Installation](#installation)
  2. [Configuration](#configuration)
-    2.1 [File location configuration](#file-location-configuration)
-    2.2 [Roxyfileman configuration](#roxyfileman-configuration)
+   2.1 [File location configuration](#file-location-configuration)
+   2.2 [Roxyfileman configuration](#roxyfileman-configuration)
  3. [Advanced customization](#advanced-customization)
-    3.1 [Custom filesystem service](custom-filesystem-service)
-    3.2 [Custom version of Roxyfileman](#custom-version-of-roxyfileman)
+   3.1 [Custom filesystem service](#custom-filesystem-service)
+   3.2 [Custom version of Roxyfileman](#custom-version-of-roxyfileman)
  4. [LICENSE](#license)
  
 ## Installation
