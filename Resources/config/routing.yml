@@ -1,0 +1,75 @@
+
+elendev_roxyfileman_conf:
+    path:     /elendev-roxyfileman/resources/conf.json
+    defaults: { _controller: ElendevRoxyFilemanBundle:Conf:conf }
+
+elendev_roxyfileman_index:
+    path:     /elendev-roxyfileman/resources/index.html
+    defaults: { _controller: ElendevRoxyFilemanBundle:Resources:resource, file: 'index.html' }
+
+elendev_roxyfileman_resource:
+    path:     /elendev-roxyfileman/resources/{file}
+    defaults: { _controller: ElendevRoxyFilemanBundle:Resources:resource }
+    requirements:
+        file: '[a-zA-Z0-9\-\/\._]+\.(?:css|html|js|json|gif|png)'
+
+elendev_roxyfileman_dir_list:
+    path:     /elendev-roxyfileman/api/dirList
+    defaults: { _controller: ElendevRoxyFilemanBundle:Directory:dirList }
+
+elendev_roxyfileman_create_dir:
+    path:     /elendev-roxyfileman/api/createDir
+    defaults: { _controller: ElendevRoxyFilemanBundle:Directory:createDir }
+
+elendev_roxyfileman_delete_dir:
+    path:     /elendev-roxyfileman/api/deleteDir
+    defaults: { _controller: ElendevRoxyFilemanBundle:Directory:deleteDir }
+
+elendev_roxyfileman_move_dir:
+    path:     /elendev-roxyfileman/api/moveDir
+    defaults: { _controller: ElendevRoxyFilemanBundle:Directory:moveDir }
+
+elendev_roxyfileman_copy_dir:
+    path:     /elendev-roxyfileman/api/copyDir
+    defaults: { _controller: ElendevRoxyFilemanBundle:Directory:copyDir }
+
+elendev_roxyfileman_rename_dir:
+    path:     /elendev-roxyfileman/api/renameDir
+    defaults: { _controller: ElendevRoxyFilemanBundle:Directory:renameDir }
+
+elendev_roxyfileman_file_list:
+    path:     /elendev-roxyfileman/api/fileList
+    defaults: { _controller: ElendevRoxyFilemanBundle:Directory:fileList }
+
+elendev_roxyfileman_upload:
+    path:     /elendev-roxyfileman/api/upload
+    defaults: { _controller: ElendevRoxyFilemanBundle:Directory:upload }
+
+elendev_roxyfileman_download:
+    path:     /elendev-roxyfileman/api/download
+    defaults: { _controller: ElendevRoxyFilemanBundle:Directory:download }
+
+elendev_roxyfileman_download_dir:
+    path:     /elendev-roxyfileman/api/downloadDir
+    defaults: { _controller: ElendevRoxyFilemanBundle:Directory:downloadDir }
+
+elendev_roxyfileman_delete_file:
+    path:     /elendev-roxyfileman/api/deleteFile
+    defaults: { _controller: ElendevRoxyFilemanBundle:Directory:deleteFile }
+
+elendev_roxyfileman_move_file:
+    path:     /elendev-roxyfileman/api/moveFile
+    defaults: { _controller: ElendevRoxyFilemanBundle:Directory:moveFile }
+
+elendev_roxyfileman_copy_file:
+    path:     /elendev-roxyfileman/api/copyFile
+    defaults: { _controller: ElendevRoxyFilemanBundle:Directory:copyFile }
+
+elendev_roxyfileman_rename_file:
+    path:     /elendev-roxyfileman/api/renameFile
+    defaults: { _controller: ElendevRoxyFilemanBundle:Directory:renameFile }
+
+elendev_roxyfileman_generate_thumb:
+    path:     /elendev-roxyfileman/api/generateThumb
+    defaults: { _controller: ElendevRoxyFilemanBundle:Directory:generateThumb }
+

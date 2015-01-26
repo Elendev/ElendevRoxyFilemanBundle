@@ -1,0 +1,24 @@
+{
+  "name": "elendev/roxyfileman-bundle",
+  "type": "symfony-bundle",
+  "description": "Provides a Roxyfileman integration for your Symfony2 Project, mainly for ckeditor and tinymce.",
+  "keywords": [ "roxyfileman", "ckeditor", "tinymce" ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Jonas RENAUDOT",
+      "email": "jonas.renaudot@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.3",
+    "symfony/framework-bundle": "~2.3"
+  },
+  "suggest": {
+    "twig/twig": "Allows to use twig templates",
+    "egeloen/ckeditor-bundle": "Allows to use Roxyfileman as a file selector for ckeditor"
+  },
+  "autoload": {
+    "psr-4": { "Elendev\\RoxyFilemanBundle\\": "" }
+  }
+}

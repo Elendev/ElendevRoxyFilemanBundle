@@ -1,0 +1,6 @@
+services:
+    elendev_roxy_fileman.local_file_system:
+        class: Elendev\RoxyFilemanBundle\FileSystem\LocalFileSystem
+        arguments: [%elendev_roxyfileman.local_file_system.base_path%, %elendev_roxyfileman.local_file_system.base_url%]
+
+    elendev_roxy_fileman.file_system: "@elendev_roxy_fileman.local_file_system"
