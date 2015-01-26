@@ -168,14 +168,14 @@ class LocalFileSystem implements FileSystemInterface{
      */
     public function getFilesList($directory = null, $type = null)
     {
-        $directory = $this->fs->makePathRelative($directory, $this->virtualRootPath);
+        $directory = $this->getRealPath($directory);
 
-        if(!is_dir($this->rootPath . '/' .$directory)){
+        if(!is_dir($directory)){
             return array();
         }
 
         $finder = new Finder();
-        $finder->in($this->rootPath . '/' . $directory)->files()->depth(0);
+        $finder->in($directory)->files()->depth(0);
 
         if($type == 'image') {
             $finder->name('/\.(?:png|jpg|jpeg|gif)$/');
@@ -246,7 +246,35 @@ class LocalFileSystem implements FileSystemInterface{
      */
     public function downloadDirectory($directory)
     {
-        // TODO: Implement downloadDirectory() method.
+        $realPath = $this->getRealPath($directory);
+
+        $finder = new Finder();
+
+        $finder->in($realPath)->files();
+
+        $zipArchive = new \ZipArchive();
+
+        $tmpZipArchive = tempnam(sys_get_temp_dir(), 'ERF');
+        $zipArchive->open($tmpZipArchive, \ZipArchive::CREATE);
+
+        try {
+            foreach($finder as $file){
+
+                $relativePath = substr($this->fs->makePathRelative($file->getPathname(), $this->rootPath), 0, -1);//remove last / and remove ./
+                $relativePath = preg_replace('|^\./|', '', $relativePath);
+
+                $zipArchive->addFile($file->getPathname(), $relativePath);
+            }
+
+            $zipArchive->close();
+
+            return new DownloadableFile(function() use($tmpZipArchive){
+                @readfile($tmpZipArchive);
+                unlink($tmpZipArchive);
+            }, 'application/zip', basename($directory) . '.zip');
+        } catch(\Exception $e) {
+            unlink($tmpZipArchive);
+        }
     }
 
     /**
