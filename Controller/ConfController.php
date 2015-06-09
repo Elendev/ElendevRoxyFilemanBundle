@@ -58,7 +58,7 @@ class ConfController extends Controller
         return $response;
     }
 
-    private function getParameter($parameter){
+    protected function getParameter($parameter){
         return $this->container->getParameter('elendev_roxyfileman.conf.' . $parameter);
     }
 }
