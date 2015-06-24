@@ -44,6 +44,16 @@ Update composer :
     $ composer update
 ```
 
+Import the bundle's routes to your routing configuration file, e.g. `routing.yml`:
+
+```
+ElendevRoxyFilemanBundle:
+    resource: "@ElendevRoxyFilemanBundle/Resources/config/routing.yml"
+    prefix:   /elendev-roxyfileman
+```
+
+The prefix can be changed. You can also add the path to the firewall to have the file manager service protected.  
+ 
 ## Configuration
 RoxyFilemanBundle provide a simple configuration.
 
@@ -73,6 +83,22 @@ Every configuration options are available on the [Roxyfileman configuration page
 
 The parameters have to be in lowercase.
 **Be careful** : every url parameter available on the [Roxyfileman configuration page](http://www.roxyfileman.com/install) should be used as a route here and the parameter have to be postfixed by `_route`. For example : the parameter `DIRLIST` becomes `dirlist_route`.
+
+### Integration with rich text editor
+
+The original index path `/fileman/index.html` is served by the route `elendev_roxyfileman_index` in this bundle, and is what you need to integrate with rich text editors like CKEditor. For example:
+
+```
+<script> 
+$(function(){
+   CKEDITOR.replace( 'editor1', {
+        filebrowserBrowseUrl: '{{ path('elendev_roxyfileman_index') }}',
+        filebrowserImageBrowseUrl: '{{ path('elendev_roxyfileman_index') }}?type=image',
+        removeDialogTabs: 'link:upload;image:upload'
+   }); 
+});
+ </script>
+```
 
 ## Advanced customization
 
