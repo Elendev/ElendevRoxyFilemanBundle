@@ -84,7 +84,7 @@ Every configuration options are available on the [Roxyfileman configuration page
 The parameters have to be in lowercase.
 **Be careful** : every url parameter available on the [Roxyfileman configuration page](http://www.roxyfileman.com/install) should be used as a route here and the parameter have to be postfixed by `_route`. For example : the parameter `DIRLIST` becomes `dirlist_route`.
 
-### Integration with rich text editor
+### Integration with rich text editor (CKEditor)
 
 The original index path `/fileman/index.html` is served by the route `elendev_roxyfileman_index` in this bundle, and is what you need to integrate with rich text editors like CKEditor. For example:
 
@@ -98,6 +98,15 @@ $(function(){
    }); 
 });
  </script>
+```
+
+Using this bundle with `egeloen/IvoryCKEditorBundle` is really simple, a small modification to the `ivory_ck_editor` configuration do the job :
+```
+ivory_ck_editor:
+    default_config: default
+    configs:
+        default:
+            filebrowserBrowseRoute: elendev_roxyfileman_index
 ```
 
 ## Advanced customization
