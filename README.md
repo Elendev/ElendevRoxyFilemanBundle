@@ -8,6 +8,7 @@ The bundle provide a [Roxyfileman](http://www.roxyfileman.com/) integration for 
  2. [Configuration](#configuration)
    1. [File location configuration](#file-location-configuration)
    2. [Roxyfileman configuration](#roxyfileman-configuration)
+   3. [Multiple profiles](#multiple-profiles)
  3. [Advanced customization](#advanced-customization)
    1. [Custom filesystem service](#custom-filesystem-service)
    2. [Custom version of Roxyfileman](#custom-version-of-roxyfileman)
@@ -84,6 +85,43 @@ Every configuration options are available on the [Roxyfileman configuration page
 The parameters have to be in lowercase.
 **Be careful** : every url parameter available on the [Roxyfileman configuration page](http://www.roxyfileman.com/install) should be used as a route here and the parameter have to be postfixed by `_route`. For example : the parameter `DIRLIST` becomes `dirlist_route`.
 
+
+### Multiple profiles
+
+Above shows how the bundle work in single profile mode. Occasionally, you may need different file manager instances to manage different directories - imagine a CMS with a "album" and a "blog" module, and you don't want the "album" administrator to touch the files in the "blog" module. This is possible by telling the bundle to operate in multi-profile mode. Here's how:
+
+``` yaml
+    elendev_roxy_fileman:
+        profiles: # Triggers multi-profile mode
+            album: # Name of the profile
+                local_file_system:
+                    base_path: /path/to/album/directory
+                    base_url: /web/album/directory
+                conf:
+                    integration: tinymce4
+            blog:
+                local_file_system:
+                    base_path: /path/to/blog/directory
+                    base_url: /web/blog/directory
+                conf:
+                    integration: tinymce4
+            
+```
+
+Now we have two profiles defined, each with its own base path, URL settings, and configuration options.
+
+The bundle needs to know which profile it should work on when its certain URL is accessed. One way is to add the `profile` placeholder to the routing config:
+
+``` yaml
+    ElendevRoxyFilemanBundle:
+        resource: "@ElendevRoxyFilemanBundle/Resources/config/routing.yml"
+        prefix:   /elendev-roxyfileman/{profile}
+        requirements:
+            profile: blog|album
+```
+
+**Note:** When `profiles` is not empty, the bundle will operate in multi-profile mode. `conf`, `local_file_system` and `file_system_service_id` values defined in the root configuration will be ignored.
+
 ### Integration with rich text editor (CKEditor)
 
 The original index path `/fileman/index.html` is served by the route `elendev_roxyfileman_index` in this bundle, and is what you need to integrate with rich text editors like CKEditor. For example:
@@ -92,7 +130,10 @@ The original index path `/fileman/index.html` is served by the route `elendev_ro
 <script> 
 $(function(){
    CKEDITOR.replace( 'editor1', {
+        // Single profile mode
         filebrowserBrowseUrl: '{{ path('elendev_roxyfileman_index') }}',
+        // To specify the profile name in multi-profile mode:
+        // filebrowserBrowseUrl: '{{ path('elendev_roxyfileman_index', { 'profile': 'blog' }) }}',
         filebrowserImageBrowseUrl: '{{ path('elendev_roxyfileman_index') }}?type=image',
         removeDialogTabs: 'link:upload;image:upload'
    }); 
