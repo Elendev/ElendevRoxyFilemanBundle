@@ -13,6 +13,7 @@ namespace Elendev\RoxyFilemanBundle\Controller;
 use Elendev\RoxyFilemanBundle\FileSystem\FileSystemInterface;
 use Elendev\RoxyFilemanBundle\FileSystem\LocalFileSystem;
 use Elendev\RoxyFilemanBundle\FileSystem\StandardResponse;
+use Elendev\RoxyFilemanBundle\FileSystem\StandardResponseInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,9 +23,9 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class DirectoryController extends Controller
 {
-    public function dirListAction()
+    public function dirListAction($profile = null)
     {
-        $directories = $this->getFileSystem()->getDirectoryTreeList();
+        $directories = $this->getFileSystem($profile)->getDirectoryTreeList();
 
         $output = array();
 
@@ -40,54 +41,54 @@ class DirectoryController extends Controller
         return $response;
     }
 
-    public function createDirAction(Request $request)
+    public function createDirAction(Request $request, $profile = null)
     {
         $path = $request->query->get('d');
         $directoryName = $request->query->get('n');
         return $this->standardResponseToHTTPResponse(
-            $this->getFileSystem()->createDirectory($path, $directoryName)
+            $this->getFileSystem($profile)->createDirectory($path, $directoryName)
         );
     }
 
-    public function deleteDirAction(Request $request)
+    public function deleteDirAction(Request $request, $profile = null)
     {
         $path = $request->query->get('d');
         return $this->standardResponseToHTTPResponse(
-            $this->getFileSystem()->deleteDirectory($path)
+            $this->getFileSystem($profile)->deleteDirectory($path)
         );
 
     }
 
-    public function moveDirAction(Request $request)
+    public function moveDirAction(Request $request, $profile = null)
     {
         $origin = $request->query->get('d');
         $destination = $request->query->get('n');
         return $this->standardResponseToHTTPResponse(
-            $this->getFileSystem()->moveDirectory($origin, $destination)
+            $this->getFileSystem($profile)->moveDirectory($origin, $destination)
         );
     }
 
-    public function copyDirAction(Request $request)
+    public function copyDirAction(Request $request, $profile = null)
     {
         $origin = $request->query->get('d');
         $destination = $request->query->get('n');
         return $this->standardResponseToHTTPResponse(
-            $this->getFileSystem()->copyDirectory($origin, $destination)
+            $this->getFileSystem($profile)->copyDirectory($origin, $destination)
         );
     }
 
-    public function renameDirAction(Request $request)
+    public function renameDirAction(Request $request, $profile = null)
     {
         $origin = $request->query->get('d');
         $destination = $request->query->get('n');
         return $this->standardResponseToHTTPResponse(
-            $this->getFileSystem()->renameDirectory($origin, $destination)
+            $this->getFileSystem($profile)->renameDirectory($origin, $destination)
         );
     }
 
-    public function fileListAction(Request $request)
+    public function fileListAction(Request $request, $profile = null)
     {
-        $files = $this->getFileSystem()->getFilesList($request->query->get('d'));
+        $files = $this->getFileSystem($profile)->getFilesList($request->query->get('d'));
 
         $output = array();
 
@@ -105,7 +106,7 @@ class DirectoryController extends Controller
         return $response;
     }
 
-    public function uploadAction(Request $request)
+    public function uploadAction(Request $request, $profile = null)
     {
         $origin = $request->request->get('d');
         $files = $request->files->get('files');
@@ -115,14 +116,14 @@ class DirectoryController extends Controller
         }
 
         return $this->standardResponseToHTTPResponse(
-            $this->getFileSystem()->upload($origin, $files)
+            $this->getFileSystem($profile)->upload($origin, $files)
         );
     }
 
-    public function downloadAction(Request $request)
+    public function downloadAction(Request $request, $profile = null)
     {
         $origin = $request->query->get('f');
-        $result = $this->getFileSystem()->download($origin);
+        $result = $this->getFileSystem($profile)->download($origin);
 
         $response = new StreamedResponse();
         $response->headers->set('Content-Type', $result->getContentType());
@@ -132,10 +133,10 @@ class DirectoryController extends Controller
         return $response;
     }
 
-    public function downloadDirAction(Request $request)
+    public function downloadDirAction(Request $request, $profile = null)
     {
         $origin = $request->query->get('d');
-        $result = $this->getFileSystem()->downloadDirectory($origin);
+        $result = $this->getFileSystem($profile)->downloadDirectory($origin);
 
         $response = new StreamedResponse();
         $response->headers->set('Content-Type', $result->getContentType());
@@ -145,48 +146,48 @@ class DirectoryController extends Controller
         return $response;
     }
 
-    public function deleteFileAction(Request $request)
+    public function deleteFileAction(Request $request, $profile = null)
     {
         $origin = $request->query->get('f');
         return $this->standardResponseToHTTPResponse(
-            $this->getFileSystem()->deleteFile($origin)
+            $this->getFileSystem($profile)->deleteFile($origin)
         );
     }
 
-    public function moveFileAction(Request $request)
-    {
-        $origin = $request->query->get('f');
-        $destination = $request->query->get('n');
-        return $this->standardResponseToHTTPResponse(
-            $this->getFileSystem()->moveFile($origin, $destination)
-        );
-    }
-
-    public function copyFileAction(Request $request)
+    public function moveFileAction(Request $request, $profile = null)
     {
         $origin = $request->query->get('f');
         $destination = $request->query->get('n');
         return $this->standardResponseToHTTPResponse(
-            $this->getFileSystem()->copyFile($origin, $destination)
+            $this->getFileSystem($profile)->moveFile($origin, $destination)
         );
     }
 
-    public function renameFileAction(Request $request)
+    public function copyFileAction(Request $request, $profile = null)
     {
         $origin = $request->query->get('f');
         $destination = $request->query->get('n');
         return $this->standardResponseToHTTPResponse(
-            $this->getFileSystem()->renameFile($origin, $destination)
+            $this->getFileSystem($profile)->copyFile($origin, $destination)
         );
     }
 
-    public function generateThumbAction(Request $request)
+    public function renameFileAction(Request $request, $profile = null)
+    {
+        $origin = $request->query->get('f');
+        $destination = $request->query->get('n');
+        return $this->standardResponseToHTTPResponse(
+            $this->getFileSystem($profile)->renameFile($origin, $destination)
+        );
+    }
+
+    public function generateThumbAction(Request $request, $profile = null)
     {
         $fileName = $request->query->get('f');
         $width = $request->query->get('width', 200);
         $height = $request->query->get('height', 200);
 
-        $downloadableFile = $this->getFileSystem()->thumbnail($fileName, $width, $height);
+        $downloadableFile = $this->getFileSystem($profile)->thumbnail($fileName, $width, $height);
 
         $response = new StreamedResponse($downloadableFile->getCallback());
         $response->headers->set('Content-Type', $downloadableFile->getContentType());
@@ -198,13 +199,15 @@ class DirectoryController extends Controller
     /**
      * @return FileSystemInterface
      */
-    private function getFileSystem() {
+    private function getFileSystem($profile) {
         //$fileSystem = new LocalFileSystem('/var/www/tmpArticles', '/tmpArticles');
-
-        return $this->get('elendev_roxy_fileman.file_system');
+        if ($profile === null) {
+            return $this->get('elendev_roxy_fileman.file_system');
+        }
+        return $this->get('elendev_roxy_fileman.' . $profile . '.file_system');
     }
 
-    private function standardResponseToHTTPResponse(StandardResponse $response){
+    private function standardResponseToHTTPResponse(StandardResponseInterface $response){
         $data = array(
             'res' => $response->isSuccess() ? 'ok' : 'error',
             'msg' => $response->getErrorMessage()

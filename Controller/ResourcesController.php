@@ -15,7 +15,8 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ResourcesController extends Controller
 {
-    public function resourceAction($file) {
+    public function resourceAction($file, $profile = null) {
+
         $filePath = $this->container->getParameter('elendev_roxyfileman.roxyfileman_library_path') . '/' . $file;
 
         if(!is_file($filePath)){

@@ -15,50 +15,53 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ConfController extends Controller
 {
-    public function confAction()
+    public function confAction($profile = null)
     {
         $response = new JsonResponse();
 
         $response->setData(array(
-            'FILES_ROOT'=>          $this->getParameter('files_root'),
-            'RETURN_URL_PREFIX'=>   $this->getParameter('return_url_prefix'),
-            'SESSION_PATH_KEY'=>    $this->getParameter('session_path_key'),
-            'THUMBS_VIEW_WIDTH'=>   $this->getParameter('thumbs_view_width'),
-            'THUMBS_VIEW_HEIGHT'=>  $this->getParameter('thumbs_view_height'),
-            'PREVIEW_THUMB_WIDTH'=> $this->getParameter('preview_thumb_width'),
-            'PREVIEW_THUMB_HEIGHT'=>$this->getParameter('preview_thumb_height'),
-            'MAX_IMAGE_WIDTH'=>     $this->getParameter('max_image_width'),
-            'MAX_IMAGE_HEIGHT'=>    $this->getParameter('max_image_height'),
-            'INTEGRATION'=>         $this->getParameter('integration'),
-            'DIRLIST'=>             $this->generateUrl($this->getParameter('dirlist_route')),
-            'CREATEDIR'=>           $this->generateUrl($this->getParameter('createdir_route')),
-            'DELETEDIR'=>           $this->generateUrl($this->getParameter('deletedir_route')),
-            'MOVEDIR'=>             $this->generateUrl($this->getParameter('movedir_route')),
-            'COPYDIR'=>             $this->generateUrl($this->getParameter('copydir_route')),
-            'RENAMEDIR'=>           $this->generateUrl($this->getParameter('renamedir_route')),
-            'FILESLIST'=>           $this->generateUrl($this->getParameter('fileslist_route')),
-            'UPLOAD'=>              $this->generateUrl($this->getParameter('upload_route')),
-            'DOWNLOAD'=>            $this->generateUrl($this->getParameter('download_route')),
-            'DOWNLOADDIR'=>         $this->generateUrl($this->getParameter('downloaddir_route')),
-            'DELETEFILE'=>          $this->generateUrl($this->getParameter('deletefile_route')),
-            'MOVEFILE'=>            $this->generateUrl($this->getParameter('movefile_route')),
-            'COPYFILE'=>            $this->generateUrl($this->getParameter('copyfile_route')),
-            'RENAMEFILE'=>          $this->generateUrl($this->getParameter('renamefile_route')),
-            'GENERATETHUMB'=>       $this->generateUrl($this->getParameter('generatethumb_route')),
-            'DEFAULTVIEW'=>         $this->getParameter('defaultview'),
-            'FORBIDDEN_UPLOADS'=>   $this->getParameter('forbidden_uploads'),
-            'ALLOWED_UPLOADS'=>     $this->getParameter('allowed_uploads'),
-            'FILEPERMISSIONS'=>     $this->getParameter('filepermissions'),
-            'DIRPERMISSIONS'=>      $this->getParameter('dirpermissions'),
-            'LANG'=>                $this->getParameter('lang'),
-            'DATEFORMAT'=>          $this->getParameter('dateformat'),
-            'OPEN_LAST_DIR'=>       $this->getParameter('open_last_dir')
+            'FILES_ROOT'=>          $this->getProfileParameter($profile, 'files_root'),
+            'RETURN_URL_PREFIX'=>   $this->getProfileParameter($profile, 'return_url_prefix'),
+            'SESSION_PATH_KEY'=>    $this->getProfileParameter($profile, 'session_path_key'),
+            'THUMBS_VIEW_WIDTH'=>   $this->getProfileParameter($profile, 'thumbs_view_width'),
+            'THUMBS_VIEW_HEIGHT'=>  $this->getProfileParameter($profile, 'thumbs_view_height'),
+            'PREVIEW_THUMB_WIDTH'=> $this->getProfileParameter($profile, 'preview_thumb_width'),
+            'PREVIEW_THUMB_HEIGHT'=>$this->getProfileParameter($profile, 'preview_thumb_height'),
+            'MAX_IMAGE_WIDTH'=>     $this->getProfileParameter($profile, 'max_image_width'),
+            'MAX_IMAGE_HEIGHT'=>    $this->getProfileParameter($profile, 'max_image_height'),
+            'INTEGRATION'=>         $this->getProfileParameter($profile, 'integration'),
+            'DIRLIST'=>             $this->generateUrl($this->getProfileParameter($profile, 'dirlist_route'), array('profile' => $profile)),
+            'CREATEDIR'=>           $this->generateUrl($this->getProfileParameter($profile, 'createdir_route'), array('profile' => $profile)),
+            'DELETEDIR'=>           $this->generateUrl($this->getProfileParameter($profile, 'deletedir_route'), array('profile' => $profile)),
+            'MOVEDIR'=>             $this->generateUrl($this->getProfileParameter($profile, 'movedir_route'), array('profile' => $profile)),
+            'COPYDIR'=>             $this->generateUrl($this->getProfileParameter($profile, 'copydir_route'), array('profile' => $profile)),
+            'RENAMEDIR'=>           $this->generateUrl($this->getProfileParameter($profile, 'renamedir_route'), array('profile' => $profile)),
+            'FILESLIST'=>           $this->generateUrl($this->getProfileParameter($profile, 'fileslist_route'), array('profile' => $profile)),
+            'UPLOAD'=>              $this->generateUrl($this->getProfileParameter($profile, 'upload_route'), array('profile' => $profile)),
+            'DOWNLOAD'=>            $this->generateUrl($this->getProfileParameter($profile, 'download_route'), array('profile' => $profile)),
+            'DOWNLOADDIR'=>         $this->generateUrl($this->getProfileParameter($profile, 'downloaddir_route'), array('profile' => $profile)),
+            'DELETEFILE'=>          $this->generateUrl($this->getProfileParameter($profile, 'deletefile_route'), array('profile' => $profile)),
+            'MOVEFILE'=>            $this->generateUrl($this->getProfileParameter($profile, 'movefile_route'), array('profile' => $profile)),
+            'COPYFILE'=>            $this->generateUrl($this->getProfileParameter($profile, 'copyfile_route'), array('profile' => $profile)),
+            'RENAMEFILE'=>          $this->generateUrl($this->getProfileParameter($profile, 'renamefile_route'), array('profile' => $profile)),
+            'GENERATETHUMB'=>       $this->generateUrl($this->getProfileParameter($profile, 'generatethumb_route'), array('profile' => $profile)),
+            'DEFAULTVIEW'=>         $this->getProfileParameter($profile, 'defaultview'),
+            'FORBIDDEN_UPLOADS'=>   $this->getProfileParameter($profile, 'forbidden_uploads'),
+            'ALLOWED_UPLOADS'=>     $this->getProfileParameter($profile, 'allowed_uploads'),
+            'FILEPERMISSIONS'=>     $this->getProfileParameter($profile, 'filepermissions'),
+            'DIRPERMISSIONS'=>      $this->getProfileParameter($profile, 'dirpermissions'),
+            'LANG'=>                $this->getProfileParameter($profile, 'lang'),
+            'DATEFORMAT'=>          $this->getProfileParameter($profile, 'dateformat'),
+            'OPEN_LAST_DIR'=>       $this->getProfileParameter($profile, 'open_last_dir')
         ));
 
         return $response;
     }
 
-    protected function getParameter($parameter){
-        return $this->container->getParameter('elendev_roxyfileman.conf.' . $parameter);
+    protected function getProfileParameter($profile, $parameter){
+        if ($profile === null) {
+            return $this->container->getParameter('elendev_roxyfileman.conf.' . $parameter);
+        }
+        return $this->container->getParameter('elendev_roxyfileman.'. $profile .'.conf.' . $parameter);
     }
 }
