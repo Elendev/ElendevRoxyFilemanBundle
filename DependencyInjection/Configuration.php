@@ -31,6 +31,16 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->arrayNode('profiles')
+                ->useAttributeAsKey('name')
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('file_system_service_id')->defaultNull()->end()
+                            ->append($this->createLocalFilesystem())
+                            ->append($this->createConf())
+                        ->end()
+                    ->end()
+                ->end()
                 ->scalarNode('roxyfileman_lib_path')
                     ->defaultNull()
                 ->end()
