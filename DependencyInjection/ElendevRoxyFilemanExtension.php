@@ -54,7 +54,7 @@ class ElendevRoxyFilemanExtension extends Extension
                 }
 
                 if (!empty($profileConfig['file_system_service_id'])) {
-                    $container->setAlias('elendev_roxy_fileman.' . $profileName . '.file_system', $profileConfig['file_system_service_id']);
+                    $container->setAlias('elendev_roxy_fileman.' . $profileName . '.file_system', $profileConfig['file_system_service_id'])->setPublic(true);
                 } else {
                     // Create file system service for profile
                     if (empty($profileConfig['local_file_system']) || empty($profileConfig['local_file_system']['base_path']) || empty($profileConfig['local_file_system']['base_url'])) {
@@ -68,7 +68,7 @@ class ElendevRoxyFilemanExtension extends Extension
                             $profileConfig['local_file_system']['base_url'],
                         )
                     );
-                    $container->setDefinition('elendev_roxy_fileman.' . $profileName . '.file_system', $fileSystemDefinition);
+                    $container->setDefinition('elendev_roxy_fileman.' . $profileName . '.file_system', $fileSystemDefinition)->setPublic(true);
                 }
             }
 
@@ -77,7 +77,7 @@ class ElendevRoxyFilemanExtension extends Extension
 
             // Alias correct file system service if one is specified
             if (!empty($config['file_system_service_id'])) {
-                $container->setAlias('elendev_roxy_fileman.file_system', $config['file_system_service_id']);
+                $container->setAlias('elendev_roxy_fileman.file_system', $config['file_system_service_id'])->setPublic(true);
                 $container->removeDefinition('elendev_roxy_fileman.local_file_system');
             } else {
 
